@@ -1,0 +1,6 @@
+[package]
+name = "advent"
+version = "0.1.0"
+authors = ["Will Speak <lithiumflame@gmail.com>"]
+
+[dependencies]
