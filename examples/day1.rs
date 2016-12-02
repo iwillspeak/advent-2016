@@ -25,7 +25,6 @@ pub fn main() {
         }
     }
 
-    println!("dupes: {:?}", dupes);
     println!("first dupe dist: {}", dupes.first().unwrap().travel_dist());
     println!("end {:?} ({})", pos, pos.travel_dist());
 }
