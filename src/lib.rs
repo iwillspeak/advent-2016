@@ -1,1 +1,1 @@
-pub mod challenge1;
+pub mod day1;
