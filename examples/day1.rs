@@ -17,14 +17,21 @@ pub fn main() {
             (new_direction, end_pos, positions)
         });
 
-    let mut dupes = Vec::new();
-    for i in 0..positions.len() {
-        let ref pos = positions[i];
-        if positions[(i + 1)..].contains(&pos) {
-            dupes.push(pos);
-        }
-    }
+    let dupe = positions.iter()
+        .scan(Vec::new(), |state, position| {
+            // double up on the `Option` here, the first one is to end the current
+            // iterator, and the second is to filter for duplicates.
+            if state.contains(position) {
+                Some(Some(position))
+            } else {
+                state.push((*position).clone());
+                Some(None)
+            }
+        })
+        .filter_map(|dup| { dup })
+        .nth(0)
+        .expect("Could not find dupe");
 
-    println!("first dupe dist: {}", dupes.first().unwrap().travel_dist());
+    println!("first dupe {:?}, dist: {}", dupe, dupe.travel_dist());
     println!("end {:?} ({})", pos, pos.travel_dist());
 }

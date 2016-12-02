@@ -15,7 +15,7 @@ pub enum Turn {
 }
 
 /// A position in 2d space
-#[derive(Debug,PartialEq)]
+#[derive(Debug,PartialEq,Clone)]
 pub struct Position(i32, i32);
 
 /// A 'move' in the path
