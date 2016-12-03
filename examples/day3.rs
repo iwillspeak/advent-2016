@@ -1918,8 +1918,6 @@ const TRIANGLES: &'static str = "  775  785  361
   665  375  287";
 
 pub fn main() {
-    let valid = TRIANGLES.lines()
-        .filter(|l| { is_triangular(l) })
-        .count();
-    println!("valid: {}", valid);
+    println!("hz sides: {}", count_by_line(TRIANGLES));
+    println!("vz sides: {}", count_by_column(TRIANGLES));
 }
