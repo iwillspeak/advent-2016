@@ -18,8 +18,7 @@ pub trait Keypad
     fn digit_at(pos: &KeypadPos<Self>) -> char;
 
     fn pin_from(instructions: &str) -> String {
-        instructions
-            .split("\n")
+        instructions.split("\n")
             .scan(Self::start_pos(), |pos, line| {
                 *pos = pos.move_by(line);
                 Some(pos.digit())

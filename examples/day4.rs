@@ -939,10 +939,15 @@ wbhsfbohwcboz-qobrm-zcuwghwqg-298[bwhoc]
 shoewudys-tou-ixyffydw-478[uszty]";
 
 pub fn main() {
-    let sector_sum = ROOMS.lines()
-        .map(|line| { Room::from(line) })
-        .filter(|room| { room.is_valid() })
-        .map(|room| { room.sector })
+    let valid_rooms = ROOMS.lines()
+        .map(|line| Room::from(line))
+        .filter(|room| room.is_valid())
+        .collect::<Vec<_>>();
+    let sector_sum = valid_rooms.iter()
+        .map(|room| room.sector)
         .sum::<u32>();
     println!("Sector sum: {}", sector_sum);
+    for room in valid_rooms.iter().filter(|room| room.decrypt_name().contains("north")) {
+        println!("{:?} ({})", room, room.decrypt_name());
+    }
 }

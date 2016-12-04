@@ -7,14 +7,14 @@
 /// Counts the valid triangles in a list of sides.
 fn count_valid_triangles(numbers: Vec<i32>) -> usize {
     numbers.chunks(3)
-        .filter(|sides| { is_triangular(sides) })
+        .filter(|sides| is_triangular(sides))
         .count()
 }
 
 /// Get the whitespace-separated numbers from a string.
 fn get_numbers(triangles: &str) -> Vec<i32> {
     triangles.split_whitespace()
-        .map(|s| { i32::from_str_radix(s, 10).unwrap() })
+        .map(|s| i32::from_str_radix(s, 10).unwrap())
         .collect()
 }
 
@@ -39,7 +39,7 @@ pub fn count_by_line(triangles: &str) -> usize {
 
 /// Counts the valid triangles in a given column.
 fn count_at_offset<'a, T>(numbers: T, offset: usize) -> usize
-    where T: IntoIterator<Item=&'a (usize, i32)>
+    where T: IntoIterator<Item = &'a (usize, i32)>
 {
     let numbers = numbers.into_iter()
         .filter_map(|&(i, side)| {
@@ -59,7 +59,8 @@ pub fn count_by_column(triangles: &str) -> usize {
         .into_iter()
         .enumerate()
         .collect::<Vec<_>>();
-    (0..3).map(|i| { count_at_offset(&numbers, i) })
+    (0..3)
+        .map(|i| count_at_offset(&numbers, i))
         .sum()
 }
 
@@ -80,11 +81,12 @@ mod test {
 
     #[test]
     fn vertical_example() {
-        const TRIANGLES: &'static str  = "101 301 501
+        const TRIANGLES: &'static str = "101 301 501
 102 302 502
 103 303 503
 201 401 601
-202 402 602
+202 402 \
+                                         602
 203 403 603";
         assert_eq!(6, count_by_column(TRIANGLES));
     }
