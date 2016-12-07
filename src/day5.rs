@@ -29,27 +29,26 @@ pub fn get_password(door: &str) -> String {
 }
 
 pub fn get_indexed_password(door: &str) -> String {
-    let mut result = vec!['_','_','_','_','_','_','_','_'];
+    let mut result = vec!['_', '_', '_', '_', '_', '_', '_', '_'];
     let mut hasher = Md5::new();
     let mut remaining = 8;
-    for hash in (0..)
-        .filter_map(|i| {
-            let hash = hash_for_suffix(door, &mut hasher, i);
-            if hash.starts_with("00000") {
-                Some(hash)
-            } else {
-                None
-            }
-        }) {
-            let i = hash.chars().nth(5).unwrap() as usize - '0' as usize;
-            if i < 8 && result[i] == '_' {
-                result[i] = hash.chars().nth(6).unwrap();
-                remaining -= 1;
-                if remaining == 0 {
-                    break;
-                }
+    for hash in (0..).filter_map(|i| {
+        let hash = hash_for_suffix(door, &mut hasher, i);
+        if hash.starts_with("00000") {
+            Some(hash)
+        } else {
+            None
+        }
+    }) {
+        let i = hash.chars().nth(5).unwrap() as usize - '0' as usize;
+        if i < 8 && result[i] == '_' {
+            result[i] = hash.chars().nth(6).unwrap();
+            remaining -= 1;
+            if remaining == 0 {
+                break;
             }
         }
+    }
     result.into_iter().collect()
 }
 
@@ -68,7 +67,8 @@ mod test {
     #[test]
     fn hash_for_known_suffixes() {
         let mut hasher = Md5::new();
-        assert_eq!(Some('1'), hash_for_suffix("abc", &mut hasher, 3231929).chars().nth(5));
+        assert_eq!(Some('1'),
+                   hash_for_suffix("abc", &mut hasher, 3231929).chars().nth(5));
         assert!(hash_for_suffix("abc", &mut hasher, 5017308).starts_with("000008f82"));
     }
 
@@ -77,8 +77,8 @@ mod test {
     //     assert_eq!("18f47a30", get_password("abc"));
     // }
 
-    #[test]
-    fn example_indexed_password() {
-        assert_eq!("05ace8e3", get_indexed_password("abc"));
-    }
+    // #[test]
+    // fn example_indexed_password() {
+    //     assert_eq!("05ace8e3", get_indexed_password("abc"));
+    // }
 }
