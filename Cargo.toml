@@ -5,4 +5,5 @@ authors = ["Will Speak <lithiumflame@gmail.com>"]
 
 [dependencies]
 onig = "1.0"
+lazy_static = "0.1.*"
 rust-crypto = "0.2"

@@ -21,11 +21,7 @@ enum ParseState {
 fn has_abba(s: &str) -> bool {
     s.as_bytes()
         .windows(4)
-        .any(|chars| {
-            chars[0] == chars[3] &&
-                chars[1] == chars[2] &&
-                chars[0] != chars[1]
-        })
+        .any(|chars| chars[0] == chars[3] && chars[1] == chars[2] && chars[0] != chars[1])
 }
 
 fn is_aba(s: &[u8]) -> bool {
@@ -111,7 +107,8 @@ impl<'a> Ip<'a> {
     pub fn supports_tls(&self) -> bool {
         // If a hypernet part has an ABBA block this IP doesn't
         // support TLS
-        if self.parts.iter()
+        if self.parts
+            .iter()
             .filter_map(|part| {
                 match part {
                     &IpPart::Standard(_) => None,
@@ -124,7 +121,8 @@ impl<'a> Ip<'a> {
 
         // otherwise return true if any standard part has an ABBA
         // block.
-        self.parts.iter()
+        self.parts
+            .iter()
             .filter_map(|part| {
                 match part {
                     &IpPart::Standard(std) => Some(std),
@@ -146,7 +144,7 @@ impl<'a> Ip<'a> {
                         }
                         abas.push(s);
                     }
-                },
+                }
                 &IpPart::Hypernet(hyper) => {
                     for s in hyper.as_bytes().windows(3).filter(|window| is_aba(window)) {
                         if abas.contains(&&(to_bab(s)[..])) {
@@ -154,7 +152,7 @@ impl<'a> Ip<'a> {
                         }
                         babs.push(s);
                     }
-                },
+                }
             }
         }
         false
