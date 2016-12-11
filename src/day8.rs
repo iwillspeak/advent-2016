@@ -162,9 +162,18 @@ impl Display {
         }
     }
 
-    pub fn command_str(&mut self, s: &str) {
-        let sp = s.find(" ").expect("invalid command");
-        let (command, args) = s.split_at(sp);
+    /// Process a command from a string. Parses the given command
+    /// and applies it to the display.
+    ///
+    /// # Arguments
+    ///  * `cmd` - The command to run
+    ///
+    /// # Pancis
+    ///
+    /// If `cmd` is not a valid command this function will panic.
+    pub fn command_str(&mut self, cmd: &str) {
+        let sp = cmd.find(" ").expect("invalid command");
+        let (command, args) = cmd.split_at(sp);
         let args = &args[1..];
         match command {
             "rect" => self.command(RectCommand::from(args)),
@@ -181,11 +190,21 @@ impl Display {
         }
     }
 
-    /// Run a command on the display
+    /// Run a command on the display. Allows the command to operate on
+    /// the display's internal pixel buffer.
+    ///
+    /// # Arguments
+    ///  * `cmd` - The command object to process.
     fn command<C>(&mut self, cmd: C)
         where C: Command
     {
         cmd.apply(self)
+    }
+
+    /// Get active pixel count. Returns the number of pixels in the
+    /// display's pixel buffer which are currently turned on.
+    pub fn active_pixels(&self) -> usize {
+        self.pixels.iter().filter(|px| **px).count()
     }
 }
 
@@ -273,5 +292,15 @@ mod test {
 #.#....
 .#.....",
                    display.to_string());
+    }
+
+    #[test]
+    fn display_get_active_pixels() {
+        let mut display = Display::default();
+        assert_eq!(0, display.active_pixels());
+        display.command_str("rect 4x5");
+        assert_eq!(20, display.active_pixels());
+        display.command_str("rect 20x2");
+        assert_eq!(52, display.active_pixels());
     }
 }
