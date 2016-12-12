@@ -7,4 +7,5 @@ const COMPRESSED: &'static str = "(6x6)AFPLBX(2x3)ZE(53x13)(4x7)ZGQO(2x4)NJ(1x8)
 pub fn main() {
     let decompressed = decompress(COMPRESSED);
     println!("Decompressed to {} chars", decompressed.len());
+    println!("Recursive decompressed length {}", decompressed_length(COMPRESSED));
 }
